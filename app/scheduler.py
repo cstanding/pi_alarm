@@ -48,7 +48,12 @@ class Scheduler(object):
         # -- First, unschedule the alarm for that day
         self.cron.remove_all(comment="ON for %s" % weekday)
         self.cron.remove_all(comment="OFF for %s" % weekday)
-
+        
+        # -- If hour is passed in as -1, we're clearing the alarm for this day and returning (skipping the second and third steps
+        if hour == -1:
+            self.cron.write()
+            return True
+            
         # -- Second, create new jobs
         current_dir = os.path.abspath(\
                 os.path.dirname(os.path.realpath(__file__)) )
