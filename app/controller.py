@@ -47,7 +47,12 @@ def set_alarm():
     alarm_time = request.form.get('time')
     weekday = get_current_day().isoweekday()
     hour, minute = alarm_time.split(":")
-
+    
+    if alarm_time == "":
+        scheduler.schedule_alarm(weekday, -1, -1)
+        flash("Alarm for %s cleared!" % day, "message")
+        return redirect(('/' + day).lower())
+        
     scheduler.schedule_alarm(weekday, hour, minute)
 
     day = get_current_day_name()
